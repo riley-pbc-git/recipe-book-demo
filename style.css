@@ -2,6 +2,9 @@
   --bg: #f3eee6;
   --bg-alt: #fffaf2;
   --text: #2e2417;
+  --handwritten-text: #33261b;
+  --handwritten-text-soft: #6a4c32;
+  --card-bg: #f7f1e3;
   --accent: #c04a3f;
   --accent-soft: #f2c3a3;
   --tile-bg: #ffffff;
@@ -18,6 +21,9 @@ body.dark-theme {
   --bg: #181314;
   --bg-alt: #221b1d;
   --text: #f7ede2;
+  --handwritten-text: #f4efe6;
+  --handwritten-text-soft: #e0d8cd;
+  --card-bg: #2b2620;
   --accent: #ffb36b;
   --accent-soft: #3b2723;
   --tile-bg: #2a2224;
@@ -272,15 +278,6 @@ button:active {
   position: relative;
 }
 
-.category-tile::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 16px;
-  border: 2px dashed rgba(0, 0, 0, 0.05);
-  pointer-events: none;
-}
-
 /* Recipe list */
 
 .section-header {
@@ -432,10 +429,10 @@ button:active {
 .notecard {
   width: 100%;
   max-width: 640px;
-  background: #fdf6ec;
+  background: var(--card-bg);
   border-radius: 12px;
   box-shadow: var(--shadow-soft);
-  border: 1px solid #d1bda1;
+  border: 1px solid var(--tile-border);
   padding: 0.2rem 0.2rem 1rem;
   position: relative;
   transform: rotate(-0.35deg);
@@ -454,10 +451,25 @@ button:active {
   background-size: cover;
 }
 
+body.dark-theme .notecard {
+  background-image: radial-gradient(
+      circle at 18% 20%,
+      rgba(255, 255, 255, 0.07),
+      rgba(255, 255, 255, 0) 46%
+    ),
+    radial-gradient(
+      circle at 78% 6%,
+      rgba(255, 255, 255, 0.06),
+      rgba(255, 255, 255, 0) 40%
+    ),
+    linear-gradient(120deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0) 58%),
+    linear-gradient(180deg, rgba(54, 46, 39, 0.8), rgba(38, 31, 27, 0.92));
+}
+
 .handwritten-card {
   padding: 0.8rem 1rem 1rem;
   font-family: "Patrick Hand", "Comic Sans MS", system-ui;
-  color: #2b1d12;
+  color: var(--handwritten-text);
   background-image: repeating-linear-gradient(
       to bottom,
       transparent 0,
@@ -521,7 +533,7 @@ button:active {
 
 .handwritten-note {
   font-size: calc(0.9rem * var(--font-scale));
-  color: #684327;
+  color: var(--handwritten-text-soft);
   margin-left: 0.4rem;
 }
 
