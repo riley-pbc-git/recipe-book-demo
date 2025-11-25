@@ -14,7 +14,7 @@
     crossorigin
   />
   <link
-    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&family=Patrick+Hand&display=swap"
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&family=JetBrains+Mono:wght@700;800&family=Patrick+Hand&display=swap"
     rel="stylesheet"
   />
   <link rel="stylesheet" href="style.css" />
@@ -52,86 +52,241 @@
 
     <!-- Category Grid -->
     <main class="main-area">
-      <section id="categoryView" class="category-view">
-        <h2 class="view-title">What are we cooking?</h2>
-        <div class="category-grid">
-          <button class="category-tile" data-category="Breakfast">Breakfast</button>
-          <button class="category-tile" data-category="Lunch">Lunch</button>
-          <button class="category-tile" data-category="Dinner">Dinner</button>
-          <button class="category-tile" data-category="Snacks">Snacks</button>
-          <button class="category-tile" data-category="Drinks">Drinks</button>
-          <button class="category-tile" data-category="Favorites">★ Favorites</button>
-        </div>
+      <div class="tab-bar" role="tablist" aria-label="Kitchen modes">
+        <button class="tab-button active" data-tab="recipes" role="tab" aria-selected="true">Nana & Papa Recipes</button>
+        <button class="tab-button" data-tab="clock" role="tab" aria-selected="false">Show Clock</button>
+        <button class="tab-button" data-tab="collage" role="tab" aria-selected="false">Show Collage</button>
+        <button class="tab-button" data-tab="standby" role="tab" aria-selected="false">Standby Settings</button>
+      </div>
 
-        <div id="categoryResults" class="category-results hidden">
-          <div class="section-header">
-            <h2 id="recipeListTitle">Category</h2>
+      <section id="recipesTab" class="tab-panel">
+        <section id="categoryView" class="category-view">
+          <h2 class="view-title">What are we cooking?</h2>
+          <div class="category-grid">
+            <button class="category-tile" data-category="Breakfast">Breakfast</button>
+            <button class="category-tile" data-category="Lunch">Lunch</button>
+            <button class="category-tile" data-category="Dinner">Dinner</button>
+            <button class="category-tile" data-category="Snacks">Snacks</button>
+            <button class="category-tile" data-category="Drinks">Drinks</button>
+            <button class="category-tile" data-category="Favorites">★ Favorites</button>
           </div>
-          <div id="recipeList" class="recipe-list"></div>
-        </div>
+
+          <div id="categoryResults" class="category-results hidden">
+            <div class="section-header">
+              <h2 id="recipeListTitle">Category</h2>
+            </div>
+            <div id="recipeList" class="recipe-list"></div>
+          </div>
+        </section>
+
+        <!-- Single Recipe View -->
+        <section id="recipeDetailView" class="recipe-detail-view hidden">
+          <div class="section-header recipe-header">
+            <div class="recipe-header-left">
+              <button class="icon-button" id="togglePhotoTyped">Typed View</button>
+            </div>
+            <div class="recipe-header-center">
+              <h2 id="recipeTitle"></h2>
+            </div>
+            <div class="recipe-header-right">
+              <button class="icon-button" id="favoriteButton" title="Favorite this recipe">☆</button>
+            </div>
+          </div>
+
+          <div class="controls-row">
+            <div class="slider-group">
+              <label for="textSizeSlider">Text size</label>
+              <input type="range" id="textSizeSlider" min="90" max="140" value="110" />
+            </div>
+            <div class="multiplier-group">
+              <label for="ingredientMultiplier">Scale recipe</label>
+              <select id="ingredientMultiplier">
+                <option value="0.5">½×</option>
+                <option value="1" selected>1×</option>
+                <option value="1.5">1.5×</option>
+                <option value="2">2×</option>
+                <option value="3">3×</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Photo view -->
+          <div id="recipePhotoView" class="recipe-photo-view">
+            <img id="recipePhoto" src="" alt="Recipe card photo" />
+            <p class="hint-text">Tap “Typed View” to see a clearer version of the recipe.</p>
+          </div>
+
+          <!-- Typed notecard view -->
+          <div id="recipeTypedView" class="recipe-typed-view hidden">
+            <div class="notecard">
+              <div class="handwritten-card">
+                <div id="typedTitle" class="handwritten-title"></div>
+                <div id="typedSubtitle" class="handwritten-subtitle"></div>
+
+                <div class="handwritten-columns">
+                  <div class="handwritten-col-label">ingredients</div>
+                  <div class="handwritten-col-label align-right">measure</div>
+                </div>
+
+                <div id="typedIngredients" class="handwritten-ingredients"></div>
+
+                <div id="typedNotes" class="handwritten-notes"></div>
+
+                <div id="typedSteps" class="handwritten-steps"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="nav-row">
+            <button class="nav-button" id="prevRecipe">← Previous</button>
+            <button class="nav-button" id="nextRecipe">Next →</button>
+          </div>
+        </section>
       </section>
 
-      <!-- Single Recipe View -->
-      <section id="recipeDetailView" class="recipe-detail-view hidden">
-        <div class="section-header recipe-header">
-          <div class="recipe-header-left">
-            <button class="icon-button" id="togglePhotoTyped">Typed View</button>
+      <section id="clockTab" class="tab-panel hidden">
+        <div class="clock-card">
+          <div class="section-header">
+            <h2>Kitchen Clock</h2>
           </div>
-          <div class="recipe-header-center">
-            <h2 id="recipeTitle"></h2>
-          </div>
-          <div class="recipe-header-right">
-            <button class="icon-button" id="favoriteButton" title="Favorite this recipe">☆</button>
-          </div>
-        </div>
+          <div id="clockDisplay" class="clock clock--retro-flip" aria-live="polite">
+            <div class="clock-layout">
+              <div class="clock-stage">
+                <div class="clock-canvas">
+                  <div class="retro-flip-clock" aria-hidden="true">
+                    <div class="flip-panel flip-panel--hours" data-value="08">
+                      <div class="flip-layer flip-layer--top" id="flipHourTop">08</div>
+                      <div class="flip-hinge"></div>
+                      <div class="flip-layer flip-layer--bottom" id="flipHourBottom">08</div>
+                      <div class="flip-anim flip-anim--top"><div id="flipHourAnimTop">08</div></div>
+                      <div class="flip-anim flip-anim--bottom"><div id="flipHourAnimBottom">08</div></div>
+                    </div>
+                    <div class="flip-panel flip-panel--minutes" data-value="00">
+                      <div class="flip-layer flip-layer--top" id="flipMinuteTop">00</div>
+                      <div class="flip-hinge"></div>
+                      <div class="flip-layer flip-layer--bottom" id="flipMinuteBottom">00</div>
+                      <div class="flip-anim flip-anim--top"><div id="flipMinuteAnimTop">00</div></div>
+                      <div class="flip-anim flip-anim--bottom"><div id="flipMinuteAnimBottom">00</div></div>
+                    </div>
+                  </div>
 
-        <div class="controls-row">
-          <div class="slider-group">
-            <label for="textSizeSlider">Text size</label>
-            <input type="range" id="textSizeSlider" min="90" max="140" value="110" />
-          </div>
-          <div class="multiplier-group">
-            <label for="ingredientMultiplier">Scale recipe</label>
-            <select id="ingredientMultiplier">
-              <option value="0.5">½×</option>
-              <option value="1" selected>1×</option>
-              <option value="1.5">1.5×</option>
-              <option value="2">2×</option>
-              <option value="3">3×</option>
-            </select>
-          </div>
-        </div>
+                  <div class="mid-century-clock" aria-hidden="true">
+                    <div class="sunburst-border"></div>
+                    <div class="sunburst-rays"></div>
+                    <div class="sunburst-face">
+                      <div class="sunburst-markers sunburst-markers--hours"></div>
+                      <div class="sunburst-markers sunburst-markers--minutes"></div>
+                      <div class="sunburst-center"></div>
+                    </div>
+                    <div class="analog-hand analog-hand--hour" id="midHourHand"></div>
+                    <div class="analog-hand analog-hand--minute" id="midMinuteHand"></div>
+                    <div class="analog-hand analog-hand--second" id="midSecondHand"></div>
+                  </div>
 
-        <!-- Photo view -->
-        <div id="recipePhotoView" class="recipe-photo-view">
-          <img id="recipePhoto" src="" alt="Recipe card photo" />
-          <p class="hint-text">Tap “Typed View” to see a clearer version of the recipe.</p>
-        </div>
-
-        <!-- Typed notecard view -->
-        <div id="recipeTypedView" class="recipe-typed-view hidden">
-          <div class="notecard">
-            <div class="handwritten-card">
-              <div id="typedTitle" class="handwritten-title"></div>
-              <div id="typedSubtitle" class="handwritten-subtitle"></div>
-
-              <div class="handwritten-columns">
-                <div class="handwritten-col-label">ingredients</div>
-                <div class="handwritten-col-label align-right">measure</div>
+                  <div class="deco-clock" aria-hidden="true">
+                    <div class="deco-background"></div>
+                    <div class="deco-face">
+                      <div class="deco-border"></div>
+                      <div class="deco-markers"></div>
+                      <div class="deco-center"></div>
+                    </div>
+                    <div class="deco-hand deco-hand--hour" id="decoHourHand"></div>
+                    <div class="deco-hand deco-hand--minute" id="decoMinuteHand"></div>
+                    <div class="deco-hand deco-hand--second" id="decoSecondHand"></div>
+                  </div>
+                </div>
               </div>
-
-              <div id="typedIngredients" class="handwritten-ingredients"></div>
-
-              <div id="typedNotes" class="handwritten-notes"></div>
-
-              <div id="typedSteps" class="handwritten-steps"></div>
+              <div class="clock-side">
+                <div class="clock-side__tile">
+                  <div class="clock-side__time" id="clockTime">08:00 AM</div>
+                  <div class="clock-side__date" id="clockDate">Thursday, Jan 1</div>
+                </div>
+                <div class="clock-side__badge" id="clockDesignLabel">Retro Flip</div>
+              </div>
             </div>
           </div>
         </div>
+      </section>
 
-        <div class="nav-row">
-          <button class="nav-button" id="prevRecipe">← Previous</button>
-          <button class="nav-button" id="nextRecipe">Next →</button>
+      <section id="collageTab" class="tab-panel hidden">
+        <div class="collage-card">
+          <div class="collage-hero">
+            <div class="collage-frame">
+              <span class="collage-pill">Collage Mode</span>
+              <h2>Family photos will shine here</h2>
+              <p>
+                When connected to your library, this space will cycle through treasured
+                pictures. For now, it gives a sense of the cozy standby vibe.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="standbyTab" class="tab-panel hidden">
+        <div class="standby-card">
+          <div class="section-header">
+            <h2>Standby Settings</h2>
+            <p class="standby-hint">Plan the idle screen for your retro-inspired display.</p>
+          </div>
+
+          <div class="standby-grid">
+            <div class="standby-group">
+              <h3>Standby mode</h3>
+              <div class="chip-row" role="group" aria-label="Standby mode">
+                <label class="chip">
+                  <input type="radio" name="standby-mode" value="clock" checked />
+                  <span>Clock</span>
+                </label>
+                <label class="chip">
+                  <input type="radio" name="standby-mode" value="collage" />
+                  <span>Collage</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="standby-group">
+              <h3>Clock design</h3>
+              <div class="design-options" role="group" aria-label="Clock design">
+                <label class="design-tile">
+                  <input type="radio" name="clock-design" value="retro-flip" checked />
+                  <div class="design-preview design-preview--retro">Retro Flip</div>
+                </label>
+                <label class="design-tile">
+                  <input type="radio" name="clock-design" value="mid-century" />
+                  <div class="design-preview design-preview--mid">Mid-Century</div>
+                </label>
+                <label class="design-tile">
+                  <input type="radio" name="clock-design" value="art-deco" />
+                  <div class="design-preview design-preview--deco">Art Deco</div>
+                </label>
+              </div>
+            </div>
+
+            <div class="standby-group">
+              <h3>Standby time</h3>
+              <div class="chip-row" role="group" aria-label="Standby time">
+                <label class="chip">
+                  <input type="radio" name="standby-time" value="5" />
+                  <span>5 minutes</span>
+                </label>
+                <label class="chip">
+                  <input type="radio" name="standby-time" value="10" checked />
+                  <span>10 minutes</span>
+                </label>
+                <label class="chip">
+                  <input type="radio" name="standby-time" value="30" />
+                  <span>30 minutes</span>
+                </label>
+                <label class="chip">
+                  <input type="radio" name="standby-time" value="60" />
+                  <span>1 hour</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="standby-summary" id="standbySummary" aria-live="polite"></div>
         </div>
       </section>
     </main>
