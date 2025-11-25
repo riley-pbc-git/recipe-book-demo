@@ -35,6 +35,16 @@ const tabPanels = {
 const clockDisplay = document.getElementById("clockDisplay");
 const clockTimeEl = document.getElementById("clockTime");
 const clockDateEl = document.getElementById("clockDate");
+const flipHourTop = document.getElementById("flipHourTop");
+const flipHourBottom = document.getElementById("flipHourBottom");
+const flipMinuteTop = document.getElementById("flipMinuteTop");
+const flipMinuteBottom = document.getElementById("flipMinuteBottom");
+const midHourHand = document.getElementById("midHourHand");
+const midMinuteHand = document.getElementById("midMinuteHand");
+const midSecondHand = document.getElementById("midSecondHand");
+const decoHourHand = document.getElementById("decoHourHand");
+const decoMinuteHand = document.getElementById("decoMinuteHand");
+const decoSecondHand = document.getElementById("decoSecondHand");
 
 const standbySummaryEl = document.getElementById("standbySummary");
 const standbyModeRadios = document.querySelectorAll("input[name='standby-mode']");
@@ -368,15 +378,53 @@ function updateClock() {
   const now = new Date();
   const hours = now.getHours();
   const minutes = now.getMinutes().toString().padStart(2, "0");
+  const seconds = now.getSeconds();
   const hours12 = hours % 12 || 12;
   const suffix = hours >= 12 ? "PM" : "AM";
 
-  clockTimeEl.textContent = `${hours12.toString().padStart(2, "0")}:${minutes} ${suffix}`;
+  const hourDigits = hours12.toString().padStart(2, "0");
+  const minuteDigits = minutes;
+
+  clockTimeEl.textContent = `${hourDigits}:${minuteDigits} ${suffix}`;
   clockDateEl.textContent = new Intl.DateTimeFormat("en-US", {
     weekday: "long",
     month: "short",
     day: "numeric",
   }).format(now);
+
+  if (flipHourTop && flipHourBottom) {
+    flipHourTop.textContent = hourDigits;
+    flipHourBottom.textContent = hourDigits;
+  }
+
+  if (flipMinuteTop && flipMinuteBottom) {
+    flipMinuteTop.textContent = minuteDigits;
+    flipMinuteBottom.textContent = minuteDigits;
+  }
+
+  const hourAngle = (hours % 12) * 30 + (now.getMinutes() / 60) * 30;
+  const minuteAngle = now.getMinutes() * 6 + seconds * 0.1;
+  const secondAngle = seconds * 6;
+
+  if (midHourHand) {
+    midHourHand.style.transform = `translate(-50%, -100%) rotate(${hourAngle}deg)`;
+  }
+  if (midMinuteHand) {
+    midMinuteHand.style.transform = `translate(-50%, -100%) rotate(${minuteAngle}deg)`;
+  }
+  if (midSecondHand) {
+    midSecondHand.style.transform = `translate(-50%, -100%) rotate(${secondAngle}deg)`;
+  }
+
+  if (decoHourHand) {
+    decoHourHand.style.transform = `translate(-50%, -100%) rotate(${hourAngle}deg)`;
+  }
+  if (decoMinuteHand) {
+    decoMinuteHand.style.transform = `translate(-50%, -100%) rotate(${minuteAngle}deg)`;
+  }
+  if (decoSecondHand) {
+    decoSecondHand.style.transform = `translate(-50%, -100%) rotate(${secondAngle}deg)`;
+  }
 }
 
 function startClock() {
