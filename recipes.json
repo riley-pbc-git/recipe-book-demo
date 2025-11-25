@@ -1,0 +1,28 @@
+[
+  {
+    "id": "nanas-pancakes",
+    "category": "Breakfast",
+    "title": "Nana's Pancakes",
+    "photo": "assets/recipes/nanas-pancakes/photo.jpg",
+    "typed": {
+      "ingredients": [
+        "1 egg",
+        "1 cup buttermilk",
+        "2 Tbsp canola oil",
+        "1 cup flour",
+        "1 Tbsp sugar",
+        "1 tsp baking powder",
+        "1/2 tsp baking soda",
+        "1/2 tsp salt",
+        "Optional: chopped blueberries"
+      ],
+      "steps": [
+        "Blend wet ingredients together in a bowl.",
+        "In a separate bowl, mix dry ingredients together.",
+        "Add dry ingredients to wet ingredients and stir until just combined. Do not overmix.",
+        "If using, gently fold in chopped blueberries.",
+        "Cook on a hot, lightly oiled griddle or pan until bubbles form and edges look set, then flip and cook until golden."
+      ]
+    }
+  }
+]
