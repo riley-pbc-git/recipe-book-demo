@@ -380,6 +380,8 @@ button:active {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
 }
 
 .slider-group {
@@ -391,6 +393,22 @@ button:active {
 
 .slider-group input[type="range"] {
   width: 160px;
+}
+
+.multiplier-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.multiplier-group select {
+  padding: 0.3rem 0.4rem;
+  border-radius: 8px;
+  border: 1px solid var(--tile-border);
+  background: var(--tile-bg);
+  color: var(--text-color);
+  min-width: 90px;
 }
 
 /* Photo view */

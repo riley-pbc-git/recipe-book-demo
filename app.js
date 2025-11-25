@@ -3,6 +3,7 @@ let allRecipes = [];
 let currentCategory = null;
 let currentRecipeIndex = 0;
 let isTypedView = false;
+let ingredientMultiplier = 1;
 let favorites = new Set();
 
 const FAVORITES_KEY = "nana-recipes-favorites";
@@ -25,6 +26,7 @@ const togglePhotoTypedBtn = document.getElementById("togglePhotoTyped");
 const favoriteButton = document.getElementById("favoriteButton");
 
 const textSizeSlider = document.getElementById("textSizeSlider");
+const ingredientMultiplierSelect = document.getElementById("ingredientMultiplier");
 
 const recipeTitleEl = document.getElementById("recipeTitle");
 const typedTitleEl = document.getElementById("typedTitle");
@@ -171,18 +173,57 @@ function renderRecipeList(category) {
   });
 }
 
-function openRecipeDetail(index) {
-  const recipe = allRecipes[index];
-  if (!recipe) return;
+function parseQuantity(amount) {
+  const match = amount.trim().match(/^([\d\.\s\/]+)(.*)$/);
+  if (!match) return null;
 
-  recipeTitleEl.textContent = recipe.title;
-  typedTitleEl.textContent = recipe.title;
-  typedSubtitleEl.textContent = recipe.typed.subtitle || "";
+  const quantityPart = match[1].trim();
+  if (!quantityPart) return null;
 
-  // Photo
-  recipePhotoEl.src = recipe.photo;
+  const tokens = quantityPart.split(/\s+/).filter(Boolean);
+  let total = 0;
+  let parsedAny = false;
 
-  // Typed ingredients
+  for (const token of tokens) {
+    const fractionMatch = token.match(/^(\d+)\/(\d+)$/);
+    if (fractionMatch) {
+      const numerator = Number(fractionMatch[1]);
+      const denominator = Number(fractionMatch[2]);
+      if (denominator === 0) return null;
+      total += numerator / denominator;
+      parsedAny = true;
+      continue;
+    }
+
+    const value = Number(token);
+    if (Number.isNaN(value)) return null;
+    total += value;
+    parsedAny = true;
+  }
+
+  if (!parsedAny) return null;
+
+  return { quantity: total, unit: match[2].trim() };
+}
+
+function formatQuantity(value) {
+  const rounded = Math.round(value * 100) / 100;
+  return rounded
+    .toFixed(2)
+    .replace(/\.0+$/, "")
+    .replace(/\.([1-9]*)0+$/, ".$1");
+}
+
+function getScaledAmount(amount) {
+  const parsed = parseQuantity(amount);
+  if (!parsed) return amount;
+
+  const scaled = parsed.quantity * ingredientMultiplier;
+  const formatted = formatQuantity(scaled);
+  return parsed.unit ? `${formatted} ${parsed.unit}` : formatted;
+}
+
+function renderTypedIngredients(recipe) {
   typedIngredientsEl.innerHTML = "";
   recipe.typed.ingredients.forEach((ing) => {
     const row = document.createElement("div");
@@ -194,7 +235,7 @@ function openRecipeDetail(index) {
 
     const amount = document.createElement("span");
     amount.className = "handwritten-amount";
-    amount.textContent = ing.amount;
+    amount.textContent = getScaledAmount(ing.amount);
 
     row.appendChild(item);
     row.appendChild(amount);
@@ -208,6 +249,23 @@ function openRecipeDetail(index) {
       typedIngredientsEl.appendChild(note);
     }
   });
+}
+
+function openRecipeDetail(index) {
+  const recipe = allRecipes[index];
+  if (!recipe) return;
+
+  recipeTitleEl.textContent = recipe.title;
+  typedTitleEl.textContent = recipe.title;
+  typedSubtitleEl.textContent = recipe.typed.subtitle || "";
+
+  // Photo
+  recipePhotoEl.src = recipe.photo;
+
+  // Typed ingredients
+  ingredientMultiplier = 1;
+  ingredientMultiplierSelect.value = "1";
+  renderTypedIngredients(recipe);
 
   // Typed notes
   typedNotesEl.innerHTML = "";
@@ -310,6 +368,18 @@ function goToNextRecipe() {
   textSizeSlider.addEventListener("input", (e) => {
     const value = Number(e.target.value) / 100;
     document.documentElement.style.setProperty("--font-scale", value.toString());
+  });
+
+  // Ingredient multiplier
+  ingredientMultiplierSelect.addEventListener("change", (e) => {
+    const value = parseFloat(e.target.value);
+    ingredientMultiplier = Number.isFinite(value) ? value : 1;
+    ingredientMultiplierSelect.value = ingredientMultiplier.toString();
+
+    const recipe = allRecipes[currentRecipeIndex];
+    if (recipe) {
+      renderTypedIngredients(recipe);
+    }
   });
 
   // Favorite toggle
