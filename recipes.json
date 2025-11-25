@@ -5,23 +5,28 @@
     "title": "Nana's Pancakes",
     "photo": "assets/recipes/nanas-pancakes/photo.jpg",
     "typed": {
+      "subtitle": "lazy Saturday stack",
       "ingredients": [
-        "1 egg",
-        "1 cup buttermilk",
-        "2 Tbsp canola oil",
-        "1 cup flour",
-        "1 Tbsp sugar",
-        "1 tsp baking powder",
-        "1/2 tsp baking soda",
-        "1/2 tsp salt",
-        "Optional: chopped blueberries"
+        { "item": "egg", "amount": "1" },
+        { "item": "buttermilk", "amount": "1 cup" },
+        { "item": "canola oil", "amount": "2 Tbsp" },
+        { "item": "flour", "amount": "1 cup" },
+        { "item": "sugar", "amount": "1 Tbsp" },
+        { "item": "baking powder", "amount": "1 tsp" },
+        { "item": "baking soda", "amount": "1/2 tsp" },
+        { "item": "salt", "amount": "1/2 tsp" },
+        { "item": "blueberries", "amount": "small handful", "note": "chopped, if you like" }
+      ],
+      "notes": [
+        "add a splash of milk if the batter feels thick",
+        "lightly oil the pan so the edges crisp"
       ],
       "steps": [
-        "Blend wet ingredients together in a bowl.",
-        "In a separate bowl, mix dry ingredients together.",
-        "Add dry ingredients to wet ingredients and stir until just combined. Do not overmix.",
-        "If using, gently fold in chopped blueberries.",
-        "Cook on a hot, lightly oiled griddle or pan until bubbles form and edges look set, then flip and cook until golden."
+        "Whisk egg + buttermilk, then slide in the oil.",
+        "Stir flour, sugar, powder, soda, salt in another bowl.",
+        "Tip dry into wet and fold just until streaks fade.",
+        "Blueberries go in gentle right before the skillet.",
+        "Drop spoonfuls on a hot greased pan; when bubbles pop and edges dry, flip once and cook golden." 
       ]
     }
   }
