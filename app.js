@@ -10,6 +10,8 @@ let clockIntervalId = null;
 let activeClockDesign = "retro-flip";
 let standbyMode = "clock";
 let standbyTime = "10";
+let lastHourDigits = null;
+let lastMinuteDigits = null;
 
 const FAVORITES_KEY = "nana-recipes-favorites";
 const THEME_KEY = "nana-recipes-theme";
@@ -39,12 +41,19 @@ const flipHourTop = document.getElementById("flipHourTop");
 const flipHourBottom = document.getElementById("flipHourBottom");
 const flipMinuteTop = document.getElementById("flipMinuteTop");
 const flipMinuteBottom = document.getElementById("flipMinuteBottom");
+const flipHourAnimTop = document.getElementById("flipHourAnimTop");
+const flipHourAnimBottom = document.getElementById("flipHourAnimBottom");
+const flipMinuteAnimTop = document.getElementById("flipMinuteAnimTop");
+const flipMinuteAnimBottom = document.getElementById("flipMinuteAnimBottom");
+const hourPanel = document.querySelector(".flip-panel--hours");
+const minutePanel = document.querySelector(".flip-panel--minutes");
 const midHourHand = document.getElementById("midHourHand");
 const midMinuteHand = document.getElementById("midMinuteHand");
 const midSecondHand = document.getElementById("midSecondHand");
 const decoHourHand = document.getElementById("decoHourHand");
 const decoMinuteHand = document.getElementById("decoMinuteHand");
 const decoSecondHand = document.getElementById("decoSecondHand");
+const clockDesignLabel = document.getElementById("clockDesignLabel");
 
 const standbySummaryEl = document.getElementById("standbySummary");
 const standbyModeRadios = document.querySelectorAll("input[name='standby-mode']");
@@ -374,6 +383,56 @@ function updateRecipeViewMode() {
 }
 
 // ---- Clock helpers ----
+function animateFlipPanel(
+  panel,
+  topEl,
+  bottomEl,
+  animTopEl,
+  animBottomEl,
+  newValue,
+  lastValue
+) {
+  if (!panel || !topEl || !bottomEl || !animTopEl || !animBottomEl) {
+    return newValue;
+  }
+
+  const previousValue = panel.dataset.value || newValue;
+
+  if (lastValue === null || previousValue === newValue) {
+    panel.dataset.value = newValue;
+    topEl.textContent = newValue;
+    bottomEl.textContent = newValue;
+    animTopEl.textContent = newValue;
+    animBottomEl.textContent = newValue;
+    return newValue;
+  }
+
+  animTopEl.textContent = previousValue;
+  animBottomEl.textContent = newValue;
+  topEl.textContent = previousValue;
+  bottomEl.textContent = previousValue;
+
+  panel.classList.remove("is-flipping");
+  // force reflow to restart animation
+  void panel.offsetWidth;
+  panel.classList.add("is-flipping");
+
+  panel.addEventListener(
+    "animationend",
+    () => {
+      panel.classList.remove("is-flipping");
+      topEl.textContent = newValue;
+      bottomEl.textContent = newValue;
+      animTopEl.textContent = newValue;
+      animBottomEl.textContent = newValue;
+    },
+    { once: true }
+  );
+
+  panel.dataset.value = newValue;
+  return newValue;
+}
+
 function updateClock() {
   const now = new Date();
   const hours = now.getHours();
@@ -392,15 +451,25 @@ function updateClock() {
     day: "numeric",
   }).format(now);
 
-  if (flipHourTop && flipHourBottom) {
-    flipHourTop.textContent = hourDigits;
-    flipHourBottom.textContent = hourDigits;
-  }
+  lastHourDigits = animateFlipPanel(
+    hourPanel,
+    flipHourTop,
+    flipHourBottom,
+    flipHourAnimTop,
+    flipHourAnimBottom,
+    hourDigits,
+    lastHourDigits
+  );
 
-  if (flipMinuteTop && flipMinuteBottom) {
-    flipMinuteTop.textContent = minuteDigits;
-    flipMinuteBottom.textContent = minuteDigits;
-  }
+  lastMinuteDigits = animateFlipPanel(
+    minutePanel,
+    flipMinuteTop,
+    flipMinuteBottom,
+    flipMinuteAnimTop,
+    flipMinuteAnimBottom,
+    minuteDigits,
+    lastMinuteDigits
+  );
 
   const hourAngle = (hours % 12) * 30 + (now.getMinutes() / 60) * 30;
   const minuteAngle = now.getMinutes() * 6 + seconds * 0.1;
@@ -428,6 +497,8 @@ function updateClock() {
 }
 
 function startClock() {
+  lastHourDigits = null;
+  lastMinuteDigits = null;
   updateClock();
   if (clockIntervalId) {
     clearInterval(clockIntervalId);
@@ -443,6 +514,9 @@ function applyClockDesign(design) {
     "clock--art-deco"
   );
   clockDisplay.classList.add(`clock--${design}`);
+  if (clockDesignLabel) {
+    clockDesignLabel.textContent = describeDesign(design);
+  }
 }
 
 function describeDesign(design) {

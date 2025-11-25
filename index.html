@@ -148,50 +148,61 @@
         <div class="clock-card">
           <div class="section-header">
             <h2>Kitchen Clock</h2>
-            <p class="clock-hint">Switch designs from Standby Settings below.</p>
           </div>
           <div id="clockDisplay" class="clock clock--retro-flip" aria-live="polite">
-            <div class="clock-canvas">
-              <div class="retro-flip-clock" aria-hidden="true">
-                <div class="flip-panel flip-panel--hours">
-                  <div class="flip-layer flip-layer--top" id="flipHourTop">08</div>
-                  <div class="flip-hinge"></div>
-                  <div class="flip-layer flip-layer--bottom" id="flipHourBottom">08</div>
-                </div>
-                <div class="flip-panel flip-panel--minutes">
-                  <div class="flip-layer flip-layer--top" id="flipMinuteTop">00</div>
-                  <div class="flip-hinge"></div>
-                  <div class="flip-layer flip-layer--bottom" id="flipMinuteBottom">00</div>
-                </div>
-              </div>
+            <div class="clock-layout">
+              <div class="clock-stage">
+                <div class="clock-canvas">
+                  <div class="retro-flip-clock" aria-hidden="true">
+                    <div class="flip-panel flip-panel--hours" data-value="08">
+                      <div class="flip-layer flip-layer--top" id="flipHourTop">08</div>
+                      <div class="flip-hinge"></div>
+                      <div class="flip-layer flip-layer--bottom" id="flipHourBottom">08</div>
+                      <div class="flip-anim flip-anim--top"><div id="flipHourAnimTop">08</div></div>
+                      <div class="flip-anim flip-anim--bottom"><div id="flipHourAnimBottom">08</div></div>
+                    </div>
+                    <div class="flip-panel flip-panel--minutes" data-value="00">
+                      <div class="flip-layer flip-layer--top" id="flipMinuteTop">00</div>
+                      <div class="flip-hinge"></div>
+                      <div class="flip-layer flip-layer--bottom" id="flipMinuteBottom">00</div>
+                      <div class="flip-anim flip-anim--top"><div id="flipMinuteAnimTop">00</div></div>
+                      <div class="flip-anim flip-anim--bottom"><div id="flipMinuteAnimBottom">00</div></div>
+                    </div>
+                  </div>
 
-              <div class="mid-century-clock" aria-hidden="true">
-                <div class="sunburst-rays"></div>
-                <div class="sunburst-face">
-                  <div class="sunburst-markers sunburst-markers--hours"></div>
-                  <div class="sunburst-markers sunburst-markers--minutes"></div>
-                  <div class="sunburst-center"></div>
-                </div>
-                <div class="analog-hand analog-hand--hour" id="midHourHand"></div>
-                <div class="analog-hand analog-hand--minute" id="midMinuteHand"></div>
-                <div class="analog-hand analog-hand--second" id="midSecondHand"></div>
-              </div>
+                  <div class="mid-century-clock" aria-hidden="true">
+                    <div class="sunburst-border"></div>
+                    <div class="sunburst-rays"></div>
+                    <div class="sunburst-face">
+                      <div class="sunburst-markers sunburst-markers--hours"></div>
+                      <div class="sunburst-markers sunburst-markers--minutes"></div>
+                      <div class="sunburst-center"></div>
+                    </div>
+                    <div class="analog-hand analog-hand--hour" id="midHourHand"></div>
+                    <div class="analog-hand analog-hand--minute" id="midMinuteHand"></div>
+                    <div class="analog-hand analog-hand--second" id="midSecondHand"></div>
+                  </div>
 
-              <div class="deco-clock" aria-hidden="true">
-                <div class="deco-background"></div>
-                <div class="deco-face">
-                  <div class="deco-border"></div>
-                  <div class="deco-markers"></div>
-                  <div class="deco-center"></div>
+                  <div class="deco-clock" aria-hidden="true">
+                    <div class="deco-background"></div>
+                    <div class="deco-face">
+                      <div class="deco-border"></div>
+                      <div class="deco-markers"></div>
+                      <div class="deco-center"></div>
+                    </div>
+                    <div class="deco-hand deco-hand--hour" id="decoHourHand"></div>
+                    <div class="deco-hand deco-hand--minute" id="decoMinuteHand"></div>
+                    <div class="deco-hand deco-hand--second" id="decoSecondHand"></div>
+                  </div>
                 </div>
-                <div class="deco-hand deco-hand--hour" id="decoHourHand"></div>
-                <div class="deco-hand deco-hand--minute" id="decoMinuteHand"></div>
-                <div class="deco-hand deco-hand--second" id="decoSecondHand"></div>
               </div>
-            </div>
-            <div class="clock-meta">
-              <div class="clock-time" id="clockTime">08:00 AM</div>
-              <div class="clock-date" id="clockDate">Thursday, Jan 1</div>
+              <div class="clock-side">
+                <div class="clock-side__tile">
+                  <div class="clock-side__time" id="clockTime">08:00 AM</div>
+                  <div class="clock-side__date" id="clockDate">Thursday, Jan 1</div>
+                </div>
+                <div class="clock-side__badge" id="clockDesignLabel">Retro Flip</div>
+              </div>
             </div>
           </div>
         </div>
