@@ -207,6 +207,37 @@ body {
   flex-direction: column;
 }
 
+.tab-bar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.tab-button {
+  padding: 0.6rem 0.8rem;
+  border-radius: 12px;
+  border: 1px solid var(--tile-border);
+  background: var(--tile-bg);
+  font-weight: 700;
+  box-shadow: var(--shadow-soft);
+  text-align: center;
+}
+
+.tab-button.active {
+  border-color: var(--accent);
+  background: linear-gradient(120deg, var(--bg), var(--bg-alt));
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+}
+
+.tab-panel {
+  border-radius: 18px;
+  border: 1px solid var(--tile-border);
+  background: var(--tile-bg);
+  box-shadow: var(--shadow-soft);
+  padding: 1rem;
+}
+
 .view-title {
   margin-top: 0;
   margin-bottom: 1rem;
@@ -587,6 +618,295 @@ body.dark-theme .notecard {
   border: 1px solid var(--tile-border);
 }
 
+/* Clock tab */
+
+.clock-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.clock-hint {
+  margin: 0;
+  opacity: 0.8;
+}
+
+.clock {
+  position: relative;
+  padding: 1.5rem;
+  border-radius: 18px;
+  border: 1px solid var(--tile-border);
+  background: linear-gradient(145deg, var(--bg-alt), var(--bg));
+  overflow: hidden;
+  min-height: 220px;
+  display: grid;
+  place-items: center;
+}
+
+.clock-frame {
+  text-align: center;
+  padding: 1rem 1.4rem;
+  border-radius: 14px;
+  position: relative;
+  z-index: 1;
+}
+
+.clock-time {
+  font-size: clamp(2.4rem, 4vw, 3.2rem);
+  letter-spacing: 0.05em;
+  margin-bottom: 0.25rem;
+}
+
+.clock-date {
+  font-size: 0.95rem;
+  opacity: 0.8;
+}
+
+.clock-decoration {
+  position: absolute;
+  inset: 12px;
+  border-radius: 16px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.clock--retro-flip .clock-frame {
+  background: #111;
+  color: #f5f1e1;
+  border: 3px solid #2a2a2a;
+  box-shadow: inset 0 0 0 2px #00000055, 0 16px 36px rgba(0, 0, 0, 0.35);
+  font-family: "DM Sans", "Courier New", monospace;
+}
+
+.clock--retro-flip .clock-time {
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.clock--retro-flip .clock-decoration {
+  background: repeating-linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.04) 0,
+      rgba(255, 255, 255, 0.04) 8px,
+      transparent 8px,
+      transparent 12px
+    ),
+    radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.1), transparent 40%),
+    #1c1c1c;
+  border: 2px solid #2d2d2d;
+}
+
+.clock--mid-century {
+  background: linear-gradient(135deg, #d3e4c2, #f1e6c5);
+}
+
+.clock--mid-century .clock-frame {
+  background: #fefbf6;
+  color: #3d3a2f;
+  border: 2px solid #9fb48c;
+  box-shadow: 0 10px 24px rgba(62, 84, 48, 0.16);
+  font-family: "DM Sans", "Futura", sans-serif;
+}
+
+.clock--mid-century .clock-time {
+  font-weight: 700;
+}
+
+.clock--mid-century .clock-decoration::before,
+.clock--mid-century .clock-decoration::after {
+  content: "";
+  position: absolute;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.35), transparent 55%);
+  filter: blur(2px);
+}
+
+.clock--mid-century .clock-decoration::before {
+  top: -20px;
+  left: -30px;
+}
+
+.clock--mid-century .clock-decoration::after {
+  bottom: -30px;
+  right: -10px;
+}
+
+.clock--art-deco {
+  background: linear-gradient(140deg, #101820, #2c3946);
+  color: #f6e8d6;
+}
+
+.clock--art-deco .clock-frame {
+  border: 2px solid #d4b483;
+  background: rgba(0, 0, 0, 0.45);
+  color: #f6e8d6;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.45), inset 0 0 0 1px #8c6c4a;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.clock--art-deco .clock-time {
+  font-family: "DM Sans", "Copperplate", sans-serif;
+}
+
+.clock--art-deco .clock-decoration {
+  border: 2px solid #d4b483;
+  background: repeating-linear-gradient(45deg, rgba(212, 180, 131, 0.12), rgba(212, 180, 131, 0.12) 14px, transparent 14px, transparent 28px);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+/* Collage tab */
+
+.collage-card {
+  background: linear-gradient(120deg, #ffe5d6, #fffaf1);
+  border-radius: 18px;
+  border: 1px solid var(--tile-border);
+  box-shadow: var(--shadow-soft);
+}
+
+.collage-hero {
+  padding: 1.6rem;
+  background-image: radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.7), transparent 40%),
+    radial-gradient(circle at 80% 10%, rgba(255, 255, 255, 0.6), transparent 40%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent 60%);
+}
+
+.collage-frame {
+  max-width: 640px;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px dashed #c28d6a;
+  border-radius: 16px;
+  padding: 1.2rem;
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.1);
+}
+
+.collage-frame h2 {
+  margin: 0.2rem 0 0.4rem;
+}
+
+.collage-frame p {
+  margin: 0;
+  line-height: 1.6;
+}
+
+.collage-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+/* Standby settings */
+
+.standby-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.standby-hint {
+  margin: 0;
+  opacity: 0.8;
+}
+
+.standby-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+}
+
+.standby-group {
+  background: var(--bg-alt);
+  border: 1px solid var(--tile-border);
+  border-radius: 14px;
+  padding: 0.9rem;
+  box-shadow: var(--shadow-soft);
+}
+
+.standby-group h3 {
+  margin: 0 0 0.6rem;
+}
+
+.chip-row {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.chip {
+  border: 1px solid var(--tile-border);
+  border-radius: 12px;
+  padding: 0.25rem 0.7rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--tile-bg);
+  box-shadow: var(--shadow-soft);
+  cursor: pointer;
+}
+
+.chip input {
+  accent-color: var(--accent);
+}
+
+.design-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 0.75rem;
+}
+
+.design-tile {
+  display: block;
+  cursor: pointer;
+}
+
+.design-tile input {
+  accent-color: var(--accent);
+  margin-bottom: 0.4rem;
+}
+
+.design-preview {
+  border-radius: 12px;
+  padding: 0.9rem;
+  border: 1px solid var(--tile-border);
+  box-shadow: var(--shadow-soft);
+  font-weight: 700;
+  text-align: center;
+}
+
+.design-preview--retro {
+  background: linear-gradient(135deg, #20252a, #0f1114);
+  color: #f0efe7;
+}
+
+.design-preview--mid {
+  background: linear-gradient(135deg, #c5dcbf, #f2e7c9);
+  color: #2f3a28;
+}
+
+.design-preview--deco {
+  background: radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.2), transparent 60%),
+    #1b222c;
+  color: #f6e6c9;
+}
+
+.standby-summary {
+  padding: 0.9rem;
+  border-radius: 12px;
+  background: linear-gradient(120deg, var(--bg), var(--bg-alt));
+  border: 1px solid var(--tile-border);
+  font-weight: 600;
+  box-shadow: var(--shadow-soft);
+}
+
 /* Utility */
 
 .hidden {
@@ -617,5 +937,9 @@ body.dark-theme .notecard {
 
   .recipe-photo-view img {
     max-height: 48vh;
+  }
+
+  .tab-bar {
+    grid-template-columns: 1fr 1fr;
   }
 }

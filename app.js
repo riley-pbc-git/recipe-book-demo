@@ -5,6 +5,11 @@ let currentRecipeIndex = 0;
 let isTypedView = false;
 let ingredientMultiplier = 1;
 let favorites = new Set();
+let activeTab = "recipes";
+let clockIntervalId = null;
+let activeClockDesign = "retro-flip";
+let standbyMode = "clock";
+let standbyTime = "10";
 
 const FAVORITES_KEY = "nana-recipes-favorites";
 const THEME_KEY = "nana-recipes-theme";
@@ -18,6 +23,23 @@ const recipeDetailView = document.getElementById("recipeDetailView");
 
 const backButton = document.getElementById("backButton");
 const themeToggle = document.getElementById("themeToggle");
+
+const tabButtons = document.querySelectorAll(".tab-button");
+const tabPanels = {
+  recipes: document.getElementById("recipesTab"),
+  clock: document.getElementById("clockTab"),
+  collage: document.getElementById("collageTab"),
+  standby: document.getElementById("standbyTab"),
+};
+
+const clockDisplay = document.getElementById("clockDisplay");
+const clockTimeEl = document.getElementById("clockTime");
+const clockDateEl = document.getElementById("clockDate");
+
+const standbySummaryEl = document.getElementById("standbySummary");
+const standbyModeRadios = document.querySelectorAll("input[name='standby-mode']");
+const clockDesignRadios = document.querySelectorAll("input[name='clock-design']");
+const standbyTimeRadios = document.querySelectorAll("input[name='standby-time']");
 
 const recipeListTitle = document.getElementById("recipeListTitle");
 const recipeListEl = document.getElementById("recipeList");
@@ -103,6 +125,31 @@ function showRecipeDetailView() {
   categoryView.classList.add("hidden");
   recipeDetailView.classList.remove("hidden");
   backButton.classList.remove("hidden");
+}
+
+function setActiveTab(tab) {
+  activeTab = tab;
+
+  tabButtons.forEach((btn) => {
+    const isActive = btn.dataset.tab === tab;
+    btn.classList.toggle("active", isActive);
+    btn.setAttribute("aria-selected", isActive ? "true" : "false");
+  });
+
+  Object.entries(tabPanels).forEach(([key, panel]) => {
+    if (!panel) return;
+    panel.classList.toggle("hidden", key !== tab);
+  });
+
+  if (tab === "recipes") {
+    showCategoryView();
+  } else {
+    backButton.classList.add("hidden");
+  }
+
+  if (tab === "clock") {
+    startClock();
+  }
 }
 
 // ---- Rendering ----
@@ -316,6 +363,72 @@ function updateRecipeViewMode() {
   }
 }
 
+// ---- Clock helpers ----
+function updateClock() {
+  const now = new Date();
+  const hours = now.getHours();
+  const minutes = now.getMinutes().toString().padStart(2, "0");
+  const hours12 = hours % 12 || 12;
+  const suffix = hours >= 12 ? "PM" : "AM";
+
+  clockTimeEl.textContent = `${hours12.toString().padStart(2, "0")}:${minutes} ${suffix}`;
+  clockDateEl.textContent = new Intl.DateTimeFormat("en-US", {
+    weekday: "long",
+    month: "short",
+    day: "numeric",
+  }).format(now);
+}
+
+function startClock() {
+  updateClock();
+  if (clockIntervalId) {
+    clearInterval(clockIntervalId);
+  }
+  clockIntervalId = setInterval(updateClock, 1000);
+}
+
+function applyClockDesign(design) {
+  if (!clockDisplay) return;
+  clockDisplay.classList.remove(
+    "clock--retro-flip",
+    "clock--mid-century",
+    "clock--art-deco"
+  );
+  clockDisplay.classList.add(`clock--${design}`);
+}
+
+function describeDesign(design) {
+  switch (design) {
+    case "mid-century":
+      return "Mid-Century";
+    case "art-deco":
+      return "Art Deco";
+    default:
+      return "Retro Flip";
+  }
+}
+
+function describeTime(time) {
+  switch (time) {
+    case "5":
+      return "5 minutes";
+    case "30":
+      return "30 minutes";
+    case "60":
+      return "1 hour";
+    default:
+      return "10 minutes";
+  }
+}
+
+function updateStandbySummary() {
+  if (!standbySummaryEl) return;
+  const modeLabel = standbyMode === "clock" ? "Clock" : "Collage";
+  const designLabel = describeDesign(activeClockDesign);
+  const timeLabel = describeTime(standbyTime);
+  standbySummaryEl.textContent = `Standby: ${modeLabel} · Clock: ${designLabel} · Delay: ${timeLabel}`;
+}
+
 // ---- Navigation ----
 function goToPrevRecipe() {
   if (!allRecipes.length) return;
@@ -331,10 +444,45 @@ function goToNextRecipe() {
 }
 
 // ---- Event listeners ----
-  document.addEventListener("DOMContentLoaded", async () => {
+document.addEventListener("DOMContentLoaded", async () => {
   loadFavorites();
   loadTheme();
   await loadRecipes();
+
+  // Tabs
+  tabButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const tab = btn.dataset.tab;
+      setActiveTab(tab);
+    });
+  });
+
+  // Clock + Standby controls
+  clockDesignRadios.forEach((input) => {
+    input.addEventListener("change", (e) => {
+      activeClockDesign = e.target.value;
+      applyClockDesign(activeClockDesign);
+      updateStandbySummary();
+    });
+  });
+
+  standbyModeRadios.forEach((input) => {
+    input.addEventListener("change", (e) => {
+      standbyMode = e.target.value;
+      updateStandbySummary();
+    });
+  });
+
+  standbyTimeRadios.forEach((input) => {
+    input.addEventListener("change", (e) => {
+      standbyTime = e.target.value;
+      updateStandbySummary();
+    });
+  });
+
+  applyClockDesign(activeClockDesign);
+  updateStandbySummary();
+  startClock();
 
   // Category tiles
   document.querySelectorAll(".category-tile").forEach((btn) => {
@@ -402,4 +550,5 @@ function goToNextRecipe() {
 
   // Start at category view
   showCategoryView();
+  setActiveTab("recipes");
 });
