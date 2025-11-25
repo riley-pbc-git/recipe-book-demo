@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nana’s Pancakes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --card-bg: #f7f1e3;
+      --text: #333;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: var(--card-bg);
+      color: var(--text);
+      font-family: 'Kalam', 'Patrick Hand', cursive;
+    }
+
+    .card {
+      width: min(880px, 94vw);
+      background: var(--card-bg);
+      padding: 32px 36px 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      line-height: 1.5;
+    }
+
+    .title {
+      text-align: center;
+      font-size: 2rem;
+      letter-spacing: 0.5px;
+    }
+
+    .columns {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+      align-items: start;
+      padding-left: 6px;
+      border: none;
+      outline: none;
+    }
+
+    .col {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      font-size: 1.05rem;
+    }
+
+    .steps {
+      font-size: 1.05rem;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding-left: 6px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --card-bg: #2b2620;
+        --text: #f4efe6;
+      }
+
+      body,
+      .card {
+        background: var(--card-bg);
+        color: var(--text);
+      }
+    }
+  </style>
+</head>
+<body>
+  <section class="card">
+    <h1 class="title">Nana’s Pancakes</h1>
+
+    <div class="columns">
+      <div class="col">
+        <p>1 egg</p>
+        <p>1 cup buttermilk</p>
+        <p>2 TB canola oil</p>
+      </div>
+      <div class="col">
+        <p>1 cup flour</p>
+        <p>1 TB sugar</p>
+        <p>1 tsp baking powder</p>
+        <p>1/2 tsp baking soda</p>
+        <p>1/2 tsp salt</p>
+        <p>(Add blueberries, chopped)</p>
+      </div>
+    </div>
+
+    <div class="steps">
+      <p>Blend wet ingredients.</p>
+      <p>Mix dry ingredients together.</p>
+      <p>Add to wet ingredients; just until blended.</p>
+      <p>Add milk as needed if too thick.</p>
+    </div>
+  </section>
+</body>
+</html>
