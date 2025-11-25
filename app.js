@@ -12,7 +12,7 @@ const THEME_KEY = "nana-recipes-theme";
 const body = document.body;
 
 const categoryView = document.getElementById("categoryView");
-const recipeListView = document.getElementById("recipeListView");
+const categoryResults = document.getElementById("categoryResults");
 const recipeDetailView = document.getElementById("recipeDetailView");
 
 const backButton = document.getElementById("backButton");
@@ -28,7 +28,9 @@ const textSizeSlider = document.getElementById("textSizeSlider");
 
 const recipeTitleEl = document.getElementById("recipeTitle");
 const typedTitleEl = document.getElementById("typedTitle");
+const typedSubtitleEl = document.getElementById("typedSubtitle");
 const typedIngredientsEl = document.getElementById("typedIngredients");
+const typedNotesEl = document.getElementById("typedNotes");
 const typedStepsEl = document.getElementById("typedSteps");
 
 const recipePhotoView = document.getElementById("recipePhotoView");
@@ -91,21 +93,12 @@ async function loadRecipes() {
 // ---- View helpers ----
 function showCategoryView() {
   categoryView.classList.remove("hidden");
-  recipeListView.classList.add("hidden");
   recipeDetailView.classList.add("hidden");
   backButton.classList.add("hidden");
 }
 
-function showRecipeListView() {
-  categoryView.classList.add("hidden");
-  recipeListView.classList.remove("hidden");
-  recipeDetailView.classList.add("hidden");
-  backButton.classList.remove("hidden");
-}
-
 function showRecipeDetailView() {
   categoryView.classList.add("hidden");
-  recipeListView.classList.add("hidden");
   recipeDetailView.classList.remove("hidden");
   backButton.classList.remove("hidden");
 }
@@ -124,6 +117,7 @@ function renderRecipeList(category) {
 
   recipeListTitle.textContent = category;
   recipeListEl.innerHTML = "";
+  categoryResults.classList.remove("hidden");
 
   if (recipes.length === 0) {
     const msg = document.createElement("p");
@@ -183,6 +177,7 @@ function openRecipeDetail(index) {
 
   recipeTitleEl.textContent = recipe.title;
   typedTitleEl.textContent = recipe.title;
+  typedSubtitleEl.textContent = recipe.typed.subtitle || "";
 
   // Photo
   recipePhotoEl.src = recipe.photo;
@@ -190,17 +185,46 @@ function openRecipeDetail(index) {
   // Typed ingredients
   typedIngredientsEl.innerHTML = "";
   recipe.typed.ingredients.forEach((ing) => {
-    const li = document.createElement("li");
-    li.textContent = ing;
-    typedIngredientsEl.appendChild(li);
+    const row = document.createElement("div");
+    row.className = "handwritten-ingredient";
+
+    const item = document.createElement("span");
+    item.className = "handwritten-item";
+    item.textContent = ing.item;
+
+    const amount = document.createElement("span");
+    amount.className = "handwritten-amount";
+    amount.textContent = ing.amount;
+
+    row.appendChild(item);
+    row.appendChild(amount);
+
+    typedIngredientsEl.appendChild(row);
+
+    if (ing.note) {
+      const note = document.createElement("div");
+      note.className = "handwritten-note";
+      note.textContent = `(${ing.note})`;
+      typedIngredientsEl.appendChild(note);
+    }
+  });
+
+  // Typed notes
+  typedNotesEl.innerHTML = "";
+  (recipe.typed.notes || []).forEach((note) => {
+    const line = document.createElement("div");
+    line.className = "handwritten-note";
+    line.textContent = `(${note})`;
+    typedNotesEl.appendChild(line);
   });
 
   // Typed steps
   typedStepsEl.innerHTML = "";
   recipe.typed.steps.forEach((step) => {
-    const li = document.createElement("li");
-    li.textContent = step;
-    typedStepsEl.appendChild(li);
+    const line = document.createElement("div");
+    line.className = "handwritten-step";
+    line.textContent = step;
+    typedStepsEl.appendChild(line);
   });
 
   // Favorite state
@@ -249,7 +273,7 @@ function goToNextRecipe() {
 }
 
 // ---- Event listeners ----
-document.addEventListener("DOMContentLoaded", async () => {
+  document.addEventListener("DOMContentLoaded", async () => {
   loadFavorites();
   loadTheme();
   await loadRecipes();
@@ -259,7 +283,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     btn.addEventListener("click", () => {
       const category = btn.dataset.category;
       renderRecipeList(category);
-      showRecipeListView();
+      categoryResults.scrollIntoView({ behavior: "smooth", block: "start" });
     });
   });
 
@@ -267,11 +291,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   backButton.classList.add("hidden");
   backButton.addEventListener("click", () => {
     if (!recipeDetailView.classList.contains("hidden")) {
-      // from detail -> list
-      showRecipeListView();
-    } else if (!recipeListView.classList.contains("hidden")) {
-      // from list -> categories
       showCategoryView();
+      categoryView.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   });
 
