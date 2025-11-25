@@ -153,29 +153,31 @@
             <div class="clock-layout">
               <div class="clock-stage">
                 <div class="clock-canvas">
-                  <div class="retro-flip-clock" aria-hidden="true">
-                    <div class="flip-panel flip-panel--hours" data-value="08">
-                      <div class="flip-layer flip-layer--top" id="flipHourTop">08</div>
-                      <div class="flip-hinge"></div>
-                      <div class="flip-layer flip-layer--bottom" id="flipHourBottom">08</div>
-                      <div class="flip-anim flip-anim--top"><div id="flipHourAnimTop">08</div></div>
-                      <div class="flip-anim flip-anim--bottom"><div id="flipHourAnimBottom">08</div></div>
-                    </div>
-                    <div class="flip-panel flip-panel--minutes" data-value="00">
-                      <div class="flip-layer flip-layer--top" id="flipMinuteTop">00</div>
-                      <div class="flip-hinge"></div>
-                      <div class="flip-layer flip-layer--bottom" id="flipMinuteBottom">00</div>
-                      <div class="flip-anim flip-anim--top"><div id="flipMinuteAnimTop">00</div></div>
-                      <div class="flip-anim flip-anim--bottom"><div id="flipMinuteAnimBottom">00</div></div>
+                  <div id="retroFlipClock" class="retro-flip-clock" aria-hidden="true">
+                    <div class="flip-stack">
+                      <div class="flip-panel flip-panel--hours" data-value="08">
+                        <div class="flip-layer flip-layer--top" id="flipHourTop">08</div>
+                        <div class="flip-hinge"></div>
+                        <div class="flip-layer flip-layer--bottom" id="flipHourBottom">08</div>
+                        <div class="flip-anim flip-anim--top"><div id="flipHourAnimTop">08</div></div>
+                        <div class="flip-anim flip-anim--bottom"><div id="flipHourAnimBottom">08</div></div>
+                      </div>
+                      <div class="flip-separator" aria-hidden="true">:</div>
+                      <div class="flip-panel flip-panel--minutes" data-value="00">
+                        <div class="flip-layer flip-layer--top" id="flipMinuteTop">00</div>
+                        <div class="flip-hinge"></div>
+                        <div class="flip-layer flip-layer--bottom" id="flipMinuteBottom">00</div>
+                        <div class="flip-anim flip-anim--top"><div id="flipMinuteAnimTop">00</div></div>
+                        <div class="flip-anim flip-anim--bottom"><div id="flipMinuteAnimBottom">00</div></div>
+                      </div>
                     </div>
                   </div>
 
                   <div class="mid-century-clock" aria-hidden="true">
-                    <div class="sunburst-border"></div>
-                    <div class="sunburst-rays"></div>
+                    <div class="sunburst sunburst--long"></div>
+                    <div class="sunburst sunburst--short"></div>
                     <div class="sunburst-face">
-                      <div class="sunburst-markers sunburst-markers--hours"></div>
-                      <div class="sunburst-markers sunburst-markers--minutes"></div>
+                      <div class="sunburst-markers"></div>
                       <div class="sunburst-center"></div>
                     </div>
                     <div class="analog-hand analog-hand--hour" id="midHourHand"></div>
@@ -184,9 +186,7 @@
                   </div>
 
                   <div class="deco-clock" aria-hidden="true">
-                    <div class="deco-background"></div>
                     <div class="deco-face">
-                      <div class="deco-border"></div>
                       <div class="deco-markers"></div>
                       <div class="deco-center"></div>
                     </div>
@@ -196,8 +196,8 @@
                   </div>
                 </div>
               </div>
-              <div class="clock-side">
-                <div class="clock-side__tile">
+              <div class="clock-side" id="clockInfoPanel">
+                <div class="clock-side__tile" id="clockInfoTile">
                   <div class="clock-side__time" id="clockTime">08:00 AM</div>
                   <div class="clock-side__date" id="clockDate">Thursday, Jan 1</div>
                 </div>

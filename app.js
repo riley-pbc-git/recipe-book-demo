@@ -54,6 +54,13 @@ const decoHourHand = document.getElementById("decoHourHand");
 const decoMinuteHand = document.getElementById("decoMinuteHand");
 const decoSecondHand = document.getElementById("decoSecondHand");
 const clockDesignLabel = document.getElementById("clockDesignLabel");
+const clockInfoPanel = document.getElementById("clockInfoPanel");
+
+const dateFormatter = new Intl.DateTimeFormat("en-US", {
+  weekday: "long",
+  month: "short",
+  day: "numeric",
+});
 
 const standbySummaryEl = document.getElementById("standbySummary");
 const standbyModeRadios = document.querySelectorAll("input[name='standby-mode']");
@@ -433,23 +440,28 @@ function animateFlipPanel(
   return newValue;
 }
 
-function updateClock() {
+function getTimeParts() {
   const now = new Date();
-  const hours = now.getHours();
-  const minutes = now.getMinutes().toString().padStart(2, "0");
-  const seconds = now.getSeconds();
-  const hours12 = hours % 12 || 12;
-  const suffix = hours >= 12 ? "PM" : "AM";
+  const hours24 = now.getHours();
+  const minutes = now.getMinutes();
+  const hours12 = hours24 % 12 || 12;
 
-  const hourDigits = hours12.toString().padStart(2, "0");
-  const minuteDigits = minutes;
+  return {
+    now,
+    hours24,
+    hourDigits: hours12.toString().padStart(2, "0"),
+    minuteDigits: minutes.toString().padStart(2, "0"),
+    suffix: hours24 >= 12 ? "PM" : "AM",
+  };
+}
 
-  clockTimeEl.textContent = `${hourDigits}:${minuteDigits} ${suffix}`;
-  clockDateEl.textContent = new Intl.DateTimeFormat("en-US", {
-    weekday: "long",
-    month: "short",
-    day: "numeric",
-  }).format(now);
+function updateFlipClock({ hourDigits, minuteDigits, suffix, now }) {
+  if (clockTimeEl) {
+    clockTimeEl.textContent = `${hourDigits}:${minuteDigits} ${suffix}`;
+  }
+  if (clockDateEl) {
+    clockDateEl.textContent = dateFormatter.format(now);
+  }
 
   lastHourDigits = animateFlipPanel(
     hourPanel,
@@ -470,9 +482,13 @@ function updateClock() {
     minuteDigits,
     lastMinuteDigits
   );
+}
 
-  const hourAngle = (hours % 12) * 30 + (now.getMinutes() / 60) * 30;
-  const minuteAngle = now.getMinutes() * 6 + seconds * 0.1;
+function updateAnalogHands({ hours24, now }) {
+  const seconds = now.getSeconds();
+  const minutes = now.getMinutes();
+  const hourAngle = (hours24 % 12) * 30 + (minutes / 60) * 30;
+  const minuteAngle = minutes * 6 + seconds * 0.1;
   const secondAngle = seconds * 6;
 
   if (midHourHand) {
@@ -496,6 +512,12 @@ function updateClock() {
   }
 }
 
+function updateClock() {
+  const timeParts = getTimeParts();
+  updateFlipClock(timeParts);
+  updateAnalogHands(timeParts);
+}
+
 function startClock() {
   lastHourDigits = null;
   lastMinuteDigits = null;
@@ -517,6 +539,7 @@ function applyClockDesign(design) {
   if (clockDesignLabel) {
     clockDesignLabel.textContent = describeDesign(design);
   }
+  applyInfoPanelTheme(design);
 }
 
 function describeDesign(design) {
@@ -527,6 +550,23 @@ function describeDesign(design) {
       return "Art Deco";
     default:
       return "Retro Flip";
+  }
+}
+
+function applyInfoPanelTheme(design) {
+  if (!clockInfoPanel) return;
+  clockInfoPanel.classList.remove(
+    "clock-info--retro",
+    "clock-info--mid",
+    "clock-info--deco"
+  );
+
+  if (design === "mid-century") {
+    clockInfoPanel.classList.add("clock-info--mid");
+  } else if (design === "art-deco") {
+    clockInfoPanel.classList.add("clock-info--deco");
+  } else {
+    clockInfoPanel.classList.add("clock-info--retro");
   }
 }
 

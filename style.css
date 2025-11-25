@@ -7,6 +7,8 @@
   --card-bg: #f7f1e3;
   --accent: #c04a3f;
   --accent-soft: #f2c3a3;
+  --deco-navy: #0b1a3a;
+  --deco-gold: #d1b464;
   --tile-bg: #ffffff;
   --tile-border: #e0d4c2;
   --shadow-soft: 0 8px 18px rgba(0, 0, 0, 0.12);
@@ -632,37 +634,42 @@ body.dark-theme .notecard {
   border-radius: 20px;
   border: 1px solid var(--tile-border);
   background: linear-gradient(135deg, var(--bg-alt), var(--bg));
-  padding: 18px;
+  padding: clamp(12px, 2vw, 22px);
   box-shadow: var(--shadow-strong);
 }
 
 .clock-layout {
   display: grid;
-  grid-template-columns: 2.2fr 1fr;
-  gap: 1rem;
-  align-items: center;
+  grid-template-columns: minmax(320px, 1.6fr) 1fr;
+  gap: clamp(0.75rem, 2vw, 1.2rem);
+  align-items: stretch;
 }
 
 .clock-stage {
   position: relative;
   width: 100%;
-  aspect-ratio: 16 / 9;
-  border-radius: 16px;
+  aspect-ratio: 1;
+  border-radius: 18px;
   overflow: hidden;
   background: radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.18), transparent 42%),
     radial-gradient(circle at 80% 10%, rgba(0, 0, 0, 0.06), transparent 48%),
     #0f1114;
   box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.03), 0 18px 36px rgba(0, 0, 0, 0.35);
+  display: grid;
+  place-items: center;
 }
 
 .clock-canvas {
-  position: absolute;
-  inset: 18px;
-  border-radius: 14px;
+  width: 100%;
+  height: 100%;
+  max-width: 560px;
+  max-height: 560px;
+  border-radius: 16px;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
 }
 
 .clock-side {
@@ -679,6 +686,8 @@ body.dark-theme .notecard {
   border-radius: 14px;
   padding: 1rem;
   box-shadow: var(--shadow-soft);
+  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease,
+    color 0.3s ease;
 }
 
 .clock-side__time {
@@ -704,6 +713,49 @@ body.dark-theme .notecard {
   color: #3b2f21;
   border: 1px solid #d1b88f;
   box-shadow: var(--shadow-soft);
+}
+
+.clock-info--retro .clock-side__tile {
+  background: #050505;
+  color: #f4efdc;
+  border-color: #2b2b2b;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.45);
+  font-family: "JetBrains Mono", "Roboto Mono", monospace;
+}
+
+.clock-info--retro .clock-side__badge {
+  background: linear-gradient(135deg, #0d0d0d, #1a1a1a);
+  color: #f4efdc;
+  border-color: #2b2b2b;
+}
+
+.clock-info--mid .clock-side__tile {
+  background: #f6efe1;
+  color: #3b2f21;
+  border-color: rgba(106, 74, 60, 0.3);
+  box-shadow: 0 16px 30px rgba(0, 0, 0, 0.18);
+  font-family: "DM Sans", system-ui, sans-serif;
+}
+
+.clock-info--mid .clock-side__badge {
+  background: linear-gradient(135deg, #d8b888, #b6895c);
+  color: #2d1f12;
+  border-color: #b6895c;
+}
+
+.clock-info--deco .clock-side__tile {
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.06), transparent 60%),
+    #0b1a3a;
+  color: #f1e4c0;
+  border-color: rgba(209, 180, 100, 0.32);
+  box-shadow: 0 18px 32px rgba(0, 0, 0, 0.38);
+  font-family: "DM Sans", system-ui, sans-serif;
+}
+
+.clock-info--deco .clock-side__badge {
+  background: linear-gradient(135deg, #d1b464, #b99232);
+  color: #0b1025;
+  border-color: rgba(209, 180, 100, 0.65);
 }
 
 @media (max-width: 900px) {
@@ -748,20 +800,42 @@ body.dark-theme .notecard {
 }
 
 .retro-flip-clock {
-  gap: 30px;
+  width: 100%;
+  height: 100%;
   perspective: 1600px;
+}
+
+.flip-stack {
+  display: inline-flex;
+  align-items: center;
+  gap: clamp(8px, 2vw, 16px);
+  padding: clamp(10px, 1.8vw, 18px);
+  background: radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.06), transparent 55%),
+    #050505;
+  border-radius: 22px;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04), 0 24px 48px rgba(0, 0, 0, 0.6);
 }
 
 .flip-panel {
   position: relative;
-  width: 300px;
-  height: 220px;
-  background: #0a0a0a;
-  border-radius: 18px;
-  box-shadow: inset 0 -6px 0 rgba(0, 0, 0, 0.55), inset 0 6px 0 rgba(255, 255, 255, 0.05),
-    0 26px 52px rgba(0, 0, 0, 0.5);
+  width: clamp(120px, 18vw, 170px);
+  height: clamp(120px, 22vw, 180px);
+  background: #040404;
+  border-radius: 14px;
+  box-shadow: inset 0 -6px 0 rgba(0, 0, 0, 0.55), inset 0 6px 0 rgba(255, 255, 255, 0.04),
+    0 22px 42px rgba(0, 0, 0, 0.55);
   overflow: hidden;
   transform-style: preserve-3d;
+  border: 1px solid #1b1b1b;
+}
+
+.flip-separator {
+  color: #f0eada;
+  font-family: "JetBrains Mono", "Roboto Mono", monospace;
+  font-weight: 800;
+  font-size: clamp(3rem, 6vw, 5rem);
+  opacity: 0.88;
+  text-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
 }
 
 .flip-panel::before,
@@ -770,8 +844,8 @@ body.dark-theme .notecard {
   position: absolute;
   left: 0;
   right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0.14), transparent 40%, transparent 60%, rgba(0, 0, 0, 0.35));
+  height: 2px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.05), transparent 45%, transparent 55%, rgba(0, 0, 0, 0.25));
 }
 
 .flip-panel::before {
@@ -791,11 +865,11 @@ body.dark-theme .notecard {
   align-items: center;
   justify-content: center;
   font-family: "JetBrains Mono", "Roboto Mono", monospace;
-  font-size: clamp(7rem, 14vw, 8.4rem);
+  font-size: clamp(4.2rem, 10vw, 6.4rem);
   font-weight: 800;
-  color: #f2f2e8;
+  color: #f4efdc;
   letter-spacing: 0.08em;
-  background: linear-gradient(180deg, #111, #0c0c0c 55%, #050505);
+  background: linear-gradient(180deg, #0b0b0b, #0c0c0c 55%, #050505);
   backface-visibility: hidden;
 }
 
@@ -817,8 +891,8 @@ body.dark-theme .notecard {
   right: 16px;
   top: 50%;
   height: 2px;
-  background: #4a4a4a;
-  box-shadow: 0 1px 0 #0a0a0a;
+  background: #2c2c2c;
+  box-shadow: 0 1px 0 #010101;
   z-index: 2;
 }
 
@@ -839,11 +913,11 @@ body.dark-theme .notecard {
   align-items: center;
   justify-content: center;
   font-family: "JetBrains Mono", "Roboto Mono", monospace;
-  font-size: clamp(7rem, 14vw, 8.4rem);
+  font-size: clamp(4.2rem, 10vw, 6.4rem);
   font-weight: 800;
-  color: #f2f2e8;
+  color: #f4efdc;
   letter-spacing: 0.08em;
-  background: linear-gradient(180deg, #111, #0c0c0c 55%, #050505);
+  background: linear-gradient(180deg, #0b0b0b, #0c0c0c 55%, #050505);
 }
 
 .flip-anim--top {
@@ -889,99 +963,66 @@ body.dark-theme .notecard {
 }
 
 .clock--mid-century .clock-stage {
-  background: #f6f1e9;
-  background-image: radial-gradient(circle at 20% 20%, rgba(0, 0, 0, 0.03), transparent 44%),
-    radial-gradient(circle at 80% 10%, rgba(0, 0, 0, 0.02), transparent 46%);
-  box-shadow: inset 0 0 0 2px rgba(106, 74, 60, 0.12), 0 18px 38px rgba(0, 0, 0, 0.2);
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.18), transparent 40%),
+    #f7f0e4;
+  box-shadow: inset 0 0 0 2px rgba(106, 74, 60, 0.16), 0 18px 38px rgba(0, 0, 0, 0.2);
 }
 
 .mid-century-clock {
   position: relative;
+  width: 92%;
+  height: 92%;
+  max-width: 520px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at 40% 40%, rgba(255, 255, 255, 0.18), transparent 55%),
+    #f8f1e6;
+  box-shadow: inset 0 0 0 10px #f4ead9, 0 18px 28px rgba(0, 0, 0, 0.16);
 }
 
-.sunburst-border {
-  position: absolute;
-  inset: 8% 10%;
-  border-radius: 32px;
-  border: 8px solid rgba(106, 74, 60, 0.15);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
-}
-
-.sunburst-rays {
+.sunburst {
   position: absolute;
   inset: 0;
-  margin: auto;
-  width: 420px;
-  height: 420px;
   border-radius: 50%;
-  background: conic-gradient(
-      #6a4a3c 0deg 10deg,
-      #c49a6c 10deg 20deg,
-      #d8b34c 20deg 30deg,
-      #6a4a3c 30deg 40deg,
-      #c49a6c 40deg 50deg,
-      #d8b34c 50deg 60deg,
-      #6a4a3c 60deg 70deg,
-      #c49a6c 70deg 80deg,
-      #d8b34c 80deg 90deg,
-      #6a4a3c 90deg 100deg,
-      #c49a6c 100deg 110deg,
-      #d8b34c 110deg 120deg,
-      #6a4a3c 120deg 130deg,
-      #c49a6c 130deg 140deg,
-      #d8b34c 140deg 150deg,
-      #6a4a3c 150deg 160deg,
-      #c49a6c 160deg 170deg,
-      #d8b34c 170deg 180deg,
-      #6a4a3c 180deg 190deg,
-      #c49a6c 190deg 200deg,
-      #d8b34c 200deg 210deg,
-      #6a4a3c 210deg 220deg,
-      #c49a6c 220deg 230deg,
-      #d8b34c 230deg 240deg,
-      #6a4a3c 240deg 250deg,
-      #c49a6c 250deg 260deg,
-      #d8b34c 260deg 270deg,
-      #6a4a3c 270deg 280deg,
-      #c49a6c 280deg 290deg,
-      #d8b34c 290deg 300deg,
-      #6a4a3c 300deg 310deg,
-      #c49a6c 310deg 320deg,
-      #d8b34c 320deg 330deg,
-      #6a4a3c 330deg 340deg,
-      #c49a6c 340deg 350deg,
-      #d8b34c 350deg 360deg
-    );
-  mask-image: radial-gradient(circle at center, transparent 0 170px, #000 190px);
-  filter: drop-shadow(0 12px 18px rgba(0, 0, 0, 0.16));
+  pointer-events: none;
+}
+
+.sunburst--long {
+  background: repeating-conic-gradient(#7a563b 0deg 10deg, transparent 10deg 15deg);
+  mask: radial-gradient(circle at center, transparent 0 55%, #000 55% 100%);
+  filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.18));
+}
+
+.sunburst--short {
+  background: repeating-conic-gradient(#d1a44d 0deg 6deg, #f2e4cf 6deg 12deg, transparent 12deg 20deg);
+  mask: radial-gradient(circle at center, transparent 0 63%, #000 63% 92%, transparent 92% 100%);
+  opacity: 0.95;
 }
 
 .sunburst-face {
   position: relative;
-  width: 380px;
-  height: 380px;
+  width: 68%;
+  height: 68%;
   border-radius: 50%;
-  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.28), transparent 50%),
-    #fdf7ec;
-  border: 10px solid #d8b34c;
-  box-shadow: inset 0 0 0 6px #f6f1e9, 0 18px 34px rgba(0, 0, 0, 0.16);
+  background: radial-gradient(circle at 50% 40%, rgba(255, 255, 255, 0.24), transparent 58%),
+    #fdf7ed;
+  box-shadow: inset 0 0 0 8px rgba(255, 255, 255, 0.9), inset 0 0 0 16px rgba(123, 84, 56, 0.14),
+    0 10px 20px rgba(0, 0, 0, 0.14);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .sunburst-markers {
   position: absolute;
-  inset: 24px;
+  inset: 14%;
   border-radius: 50%;
-}
-
-.sunburst-markers--hours {
-  background: conic-gradient(from -90deg, #3b2f21 0deg 4deg, transparent 4deg 30deg);
-  mask-image: radial-gradient(circle at center, transparent 0 130px, #000 150px);
-}
-
-.sunburst-markers--minutes {
-  inset: 38px;
-  background: conic-gradient(from -90deg, rgba(59, 47, 33, 0.5) 0deg 1deg, transparent 1deg 6deg);
-  mask-image: radial-gradient(circle at center, transparent 0 140px, #000 160px);
+  background: repeating-conic-gradient(#7a563b 0deg 6deg, transparent 6deg 30deg);
+  mask: radial-gradient(circle at center, transparent 0 32%, #000 32% 48%, transparent 48% 100%);
+  opacity: 0.95;
 }
 
 .sunburst-center {
@@ -989,11 +1030,8 @@ body.dark-theme .notecard {
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: #6a4a3c;
-  border: 4px solid #f6f1e9;
-  inset: 0;
-  margin: auto;
-  box-shadow: 0 0 0 6px rgba(0, 0, 0, 0.08);
+  background: linear-gradient(145deg, #8a6444, #5d3b29);
+  box-shadow: 0 0 0 8px #fdf7ed, 0 6px 10px rgba(0, 0, 0, 0.15);
 }
 
 .analog-hand {
@@ -1003,117 +1041,85 @@ body.dark-theme .notecard {
   transform-origin: 50% 85%;
   transform: translate(-50%, -100%) rotate(0deg);
   pointer-events: none;
-}
-
-.analog-hand--hour {
-  width: 26px;
-  height: 132px;
-  background: #3b2f21;
-  clip-path: polygon(50% 0%, 88% 100%, 12% 100%);
+  border-radius: 10px;
   box-shadow: 0 8px 14px rgba(0, 0, 0, 0.2);
 }
 
-.analog-hand--minute {
+.analog-hand--hour {
   width: 16px;
-  height: 180px;
-  background: #6a4a3c;
-  clip-path: polygon(50% 0%, 78% 100%, 22% 100%);
-  box-shadow: 0 8px 14px rgba(0, 0, 0, 0.18);
+  height: 26%;
+  background: #7a563b;
+}
+
+.analog-hand--minute {
+  width: 10px;
+  height: 34%;
+  background: #c4983c;
 }
 
 .analog-hand--second {
-  width: 6px;
-  height: 200px;
-  background: #d96a34;
-  clip-path: polygon(50% 0%, 74% 100%, 26% 100%);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  width: 4px;
+  height: 38%;
+  background: #e46c3f;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.18);
 }
 
 .clock--art-deco .clock-stage {
-  background: radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.08), transparent 40%),
-    radial-gradient(circle at 80% 10%, rgba(255, 255, 255, 0.05), transparent 50%),
-    #0a1a4a;
-  box-shadow: inset 0 0 0 2px rgba(212, 175, 55, 0.25), 0 22px 44px rgba(0, 0, 0, 0.55);
+  background: radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.07), transparent 42%),
+    #0b1a3a;
+  box-shadow: inset 0 0 0 2px rgba(209, 180, 100, 0.28), 0 22px 44px rgba(0, 0, 0, 0.55);
 }
 
 .deco-clock {
   position: relative;
-}
-
-.deco-background {
-  position: absolute;
-  inset: 8% 10%;
-  border-radius: 24px;
-  background: linear-gradient(135deg, rgba(212, 175, 55, 0.18), transparent 46%),
-    linear-gradient(225deg, rgba(212, 175, 55, 0.16), transparent 40%),
-    #0a1a4a;
-  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.08);
+  width: 92%;
+  height: 92%;
+  max-width: 520px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.06), transparent 56%),
+    var(--deco-navy, #0b1a3a);
+  box-shadow: inset 0 0 0 10px rgba(255, 255, 255, 0.05), 0 22px 44px rgba(0, 0, 0, 0.55);
 }
 
 .deco-face {
   position: absolute;
-  inset: 64px;
-  border-radius: 26px;
-  background: linear-gradient(135deg, rgba(212, 175, 55, 0.22), rgba(10, 26, 74, 0.8)),
-    #0c1f55;
-  border: 4px solid #d4af37;
-  box-shadow: inset 0 0 0 3px rgba(255, 255, 255, 0.08), 0 16px 32px rgba(0, 0, 0, 0.4);
+  inset: 12%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 45%, rgba(255, 255, 255, 0.08), transparent 60%),
+    var(--deco-navy, #0c1f40);
+  box-shadow: inset 0 0 0 12px rgba(209, 180, 100, 0.25), inset 0 0 48px rgba(0, 0, 0, 0.45),
+    0 0 60px rgba(0, 0, 0, 0.3);
 }
 
-.deco-border {
+.deco-face::after {
+  content: "";
   position: absolute;
-  inset: 16px;
-  border-radius: 18px;
-  border: 3px solid #d4af37;
-  background: conic-gradient(
-      from 0deg,
-      transparent 0deg 20deg,
-      rgba(212, 175, 55, 0.36) 20deg 40deg,
-      transparent 40deg 80deg,
-      rgba(212, 175, 55, 0.32) 80deg 100deg,
-      transparent 100deg 140deg,
-      rgba(212, 175, 55, 0.36) 140deg 160deg,
-      transparent 160deg 200deg,
-      rgba(212, 175, 55, 0.32) 200deg 220deg,
-      transparent 220deg 260deg,
-      rgba(212, 175, 55, 0.36) 260deg 280deg,
-      transparent 280deg 320deg,
-      rgba(212, 175, 55, 0.32) 320deg 340deg,
-      transparent 340deg 360deg
-    );
+  inset: 18%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 40%, rgba(255, 255, 255, 0.06), transparent 60%);
+  pointer-events: none;
 }
 
 .deco-markers {
   position: absolute;
-  inset: 56px;
-  border-radius: 24px;
-  background: conic-gradient(
-      from -90deg,
-      #d4af37 0deg 6deg,
-      transparent 6deg 84deg,
-      #d4af37 84deg 90deg,
-      transparent 90deg 174deg,
-      #d4af37 174deg 180deg,
-      transparent 180deg 264deg,
-      #d4af37 264deg 270deg,
-      transparent 270deg 354deg,
-      #d4af37 354deg 360deg
-    ),
-    linear-gradient(90deg, rgba(212, 175, 55, 0.12), rgba(212, 175, 55, 0));
-  mask-image: radial-gradient(circle at center, transparent 0 120px, #000 150px);
-  box-shadow: inset 0 0 0 1px rgba(212, 175, 55, 0.45);
+  inset: 16%;
+  border-radius: 50%;
+  background: repeating-conic-gradient(var(--deco-gold, #d1b464) 0deg 8deg, transparent 8deg 30deg);
+  mask: radial-gradient(circle at center, transparent 0 34%, #000 34% 50%, transparent 50% 100%);
+  box-shadow: inset 0 0 0 2px rgba(209, 180, 100, 0.35);
 }
 
 .deco-center {
   position: absolute;
-  width: 38px;
-  height: 38px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #d4af37, #ad8a2f);
-  border: 4px solid #0a1a4a;
-  inset: 0;
-  margin: auto;
-  box-shadow: 0 0 0 6px rgba(212, 175, 55, 0.28);
+  background: radial-gradient(circle, var(--deco-gold, #d1b464) 0%, #b99232 70%);
+  box-shadow: 0 0 0 8px rgba(209, 180, 100, 0.35), 0 0 28px rgba(0, 0, 0, 0.28);
 }
 
 .deco-hand {
@@ -1122,28 +1128,27 @@ body.dark-theme .notecard {
   top: 50%;
   transform-origin: 50% 85%;
   transform: translate(-50%, -100%) rotate(0deg);
-  background: linear-gradient(135deg, #d4af37, #c9a02e 50%, #d4af37);
+  background: linear-gradient(180deg, var(--deco-gold, #d1b464) 0%, #c49c3a 70%, var(--deco-gold, #d1b464) 100%);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.32);
   pointer-events: none;
+  border-radius: 12px;
+  transition: transform 0.12s linear;
 }
 
 .deco-hand--hour {
-  width: 34px;
-  height: 140px;
-  clip-path: polygon(50% 0%, 80% 50%, 100% 60%, 70% 100%, 30% 100%, 0 60%, 20% 50%);
+  width: 14px;
+  height: 28%;
 }
 
 .deco-hand--minute {
-  width: 18px;
-  height: 190px;
-  clip-path: polygon(50% 0%, 70% 12%, 70% 88%, 100% 100%, 0 100%, 30% 88%, 30% 12%);
+  width: 10px;
+  height: 38%;
 }
 
 .deco-hand--second {
-  width: 8px;
-  height: 210px;
-  background: linear-gradient(135deg, #e05b4a, #ffb199);
-  clip-path: polygon(50% 0%, 80% 100%, 20% 100%);
+  width: 4px;
+  height: 42%;
+  background: linear-gradient(180deg, #c04a3f 0%, #f2b28a 70%);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.28);
 }
 /* Collage tab */
