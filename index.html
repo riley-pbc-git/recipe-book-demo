@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Nana & Papa Recipe Cards</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app" id="app">
+    <header class="app-header">
+      <div class="header-left">
+        <button class="back-button" id="backButton" aria-label="Back to categories">← Back</button>
+        <h1 class="app-title">Nana & Papa Recipes</h1>
+      </div>
+      <div class="header-right">
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle light/dark mode">
+          🌙
+        </button>
+      </div>
+    </header>
+
+    <!-- Category Grid -->
+    <main class="main-area">
+      <section id="categoryView" class="category-view">
+        <h2 class="view-title">What are we cooking?</h2>
+        <div class="category-grid">
+          <button class="category-tile" data-category="Breakfast">Breakfast</button>
+          <button class="category-tile" data-category="Lunch">Lunch</button>
+          <button class="category-tile" data-category="Dinner">Dinner</button>
+          <button class="category-tile" data-category="Snacks">Snacks</button>
+          <button class="category-tile" data-category="Drinks">Drinks</button>
+          <button class="category-tile" data-category="Favorites">★ Favorites</button>
+        </div>
+      </section>
+
+      <!-- Recipe List View -->
+      <section id="recipeListView" class="recipe-list-view hidden">
+        <div class="section-header">
+          <h2 id="recipeListTitle">Category</h2>
+        </div>
+        <div id="recipeList" class="recipe-list"></div>
+      </section>
+
+      <!-- Single Recipe View -->
+      <section id="recipeDetailView" class="recipe-detail-view hidden">
+        <div class="section-header recipe-header">
+          <div class="recipe-header-left">
+            <button class="icon-button" id="togglePhotoTyped">Typed View</button>
+          </div>
+          <div class="recipe-header-center">
+            <h2 id="recipeTitle"></h2>
+          </div>
+          <div class="recipe-header-right">
+            <button class="icon-button" id="favoriteButton" title="Favorite this recipe">☆</button>
+          </div>
+        </div>
+
+        <div class="controls-row">
+          <div class="slider-group">
+            <label for="textSizeSlider">Text size</label>
+            <input type="range" id="textSizeSlider" min="90" max="140" value="110" />
+          </div>
+        </div>
+
+        <!-- Photo view -->
+        <div id="recipePhotoView" class="recipe-photo-view">
+          <img id="recipePhoto" src="" alt="Recipe card photo" />
+          <p class="hint-text">Tap “Typed View” to see a clearer version of the recipe.</p>
+        </div>
+
+        <!-- Typed notecard view -->
+        <div id="recipeTypedView" class="recipe-typed-view hidden">
+          <div class="notecard">
+            <div class="notecard-header">
+              <span class="notecard-label">Bon Appétit</span>
+            </div>
+            <div class="notecard-body">
+              <h3 id="typedTitle" class="notecard-title"></h3>
+
+              <div class="notecard-section">
+                <h4>Ingredients</h4>
+                <ul id="typedIngredients"></ul>
+              </div>
+
+              <div class="notecard-section">
+                <h4>Steps</h4>
+                <ol id="typedSteps"></ol>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="nav-row">
+          <button class="nav-button" id="prevRecipe">← Previous</button>
+          <button class="nav-button" id="nextRecipe">Next →</button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
